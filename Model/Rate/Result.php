@@ -89,6 +89,30 @@ class Result extends \Magento\Shipping\Model\Rate\Result
     }
 
     /**
+     * Get allowed shipping methods
+     *
+     * @return array
+     */
+    public static function getMethods()
+    {
+        $methods = [
+            'signature'            => 'delivery/signature_',
+            'only_recipient'       => 'delivery/only_recipient_',
+            'signature_only_recip' => 'delivery/signature_and_only_recipient_',
+            'morning'              => 'morning/',
+            'morning_signature'    => 'morning_signature/',
+            'evening'              => 'evening/',
+            'evening_signature'    => 'evening_signature/',
+            'pickup'               => 'pickup/',
+            'pickup_express'       => 'pickup_express/',
+            'mailbox'              => 'mailbox/',
+            'digital_stamp'        => 'digital_stamp/',
+        ];
+
+        return $methods;
+    }
+
+    /**
      * Add a rate to the result
      *
      * @param \Magento\Quote\Model\Quote\Address\RateResult\AbstractResult|\Magento\Shipping\Model\Rate\Result $result
@@ -119,30 +143,6 @@ class Result extends \Magento\Shipping\Model\Rate\Result
      *
      * @return array
      */
-    private function getMethods()
-    {
-        $methods = [
-            'signature' => 'delivery/signature_',
-            'only_recipient' => 'delivery/only_recipient_',
-            'signature_only_recip' => 'delivery/signature_and_only_recipient_',
-            'morning' => 'morning/',
-            'morning_signature' => 'morning_signature/',
-            'evening' => 'evening/',
-            'evening_signature' => 'evening_signature/',
-            'pickup' => 'pickup/',
-            'pickup_express' => 'pickup_express/',
-            'mailbox' => 'mailbox/',
-            'digital_stamp' => 'digital_stamp/',
-        ];
-
-        return $methods;
-    }
-
-    /**
-     * Get allowed shipping methods
-     *
-     * @return array
-     */
     private function getAllowedMethods()
     {
         if ($this->package->fitInDigitalStamp()) {
@@ -153,7 +153,7 @@ class Result extends \Magento\Shipping\Model\Rate\Result
             return ['mailbox' => 'mailbox/'];
         }
 
-	    $methods = $this->getMethods();
+	    $methods = $this::getMethods();
 	    if (!$this->package->fitInMailbox()) {
 		    unset($methods['mailbox']);
 	    }
